@@ -25,12 +25,12 @@ function invCosn(v) { //invertierte Cosinus Funktion
 }
 
 const spirale = 3;
-const dotSize = 0.05; //größe der punkte
+const dotSize = 0.505; //größe der punkte
 const radius = Math.sqrt(0.5) + dotSize; // größe der kreise + DotSize damit der Kreis von der mitte aus startet
 const PHI = (1 + Math.sqrt(5)) / spirale; //phi = irationale nummer, daraus quadratwurzel aus (5)
 
 let t;   // zeit3
-const frames = 800; //frames
+const frames = 600; //frames
 
 function draw() {
 
@@ -42,21 +42,21 @@ function draw() {
   fill(1);
   //polar koordinaten 
 
-  //mehrere kreise in einem kreis angeordnet
-  const count = 2000 * invCosn(t); //anzahl der einzelnen Kreise * time (animation)
+  //mehrere kreise in einem Kreis angeordnet
+  const count = 3000 * invCosn(t); //anzahl der einzelnen Kreise * time (animation)
     //loop
   for (let i=0; i < count; i++) {
 
-  // kreise
+  // Kreise
     const f = i / count; // fraction
     const a = i / PHI; // anordnung im Kreis/spirale = PI oder PHI
     const dist = f * radius; // distance = fraction * radius
     const x = 0.5 + cos(a * TWO_PI) * dist;
     const y = 0.5 + sin(a * TWO_PI) * dist;
-    const sig = pow(cosn(f + t * 6), 2);  // Signal für weniger Punkte in der mitte, fraction + time 
+    const sig = pow(cosn(f + t * 6), 1.3);  // Signal für weniger Punkte in der mitte, fraction + time 
     const r = sig * f * dotSize;
 
-    const hue = fract(f * 0.5 + t); //Farbe über zeit ändern. 
+    const hue = fract(f * 1.15 + t); //Farbe über zeit ändern. 
     const sat = 1;
     const light = 0.6 * sig + 0.1; 
     const clr = color(hue, sat, light);

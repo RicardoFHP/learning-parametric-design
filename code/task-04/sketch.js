@@ -26,6 +26,10 @@ function draw() {
       fill(255);
       circle(-size/2, -size/2, size, size);
       
+      if (x < 200) {
+        size
+      }
+
       pop();
     }
   }
