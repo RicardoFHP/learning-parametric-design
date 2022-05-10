@@ -19,7 +19,6 @@ function draw() {
   
   beginShape();
 
-  frameRate (10);
   vertex(0, 0);
   vertex(40, 0);
   
@@ -29,6 +28,7 @@ function draw() {
     let direct = 91;
     if (y%2===0) {
       direct = 1;
+      
     }
 
     curveVertex(100 + cX * direct, 400 / 5 * y - (400 / 5 * 0.5), 200 + x * direct * -1, 400 / 5 * y)
@@ -38,6 +38,4 @@ function draw() {
   vertex(0, 400);
   11
   endShape(CLOSE);
-
-  draw(30);
 }
