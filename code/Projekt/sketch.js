@@ -14,7 +14,7 @@ var audio
 var fft //FFT = (Fast Fourier Transform) is an analysis algorithm that isolates individual audio frequencies within a waveform.
 let easing = 0.05;
 //let amp; //Variable for Amplitud: Loudness and Soundlevel
-
+let colorPicker;
 
 // load soundfile
 function preload() {
@@ -31,14 +31,25 @@ function setup() {
 
       amp = new p5.Amplitude();
       amp.setInput(audio);
+
+
+//##################################
+// Colorpicker Sets up
+//##################################
+      {
+        colorPicker = createColorPicker('#ed225d');
+        colorPicker.position(0, height + 5);
+      }
+//##################################      
+
 }
 
 
 function draw() {
   //background rgb color 30 = dark gray 0=black, 255=white red=0,green=0,blue=0
-  background(30) 
+  background(30,10,10);
   stroke(random(230, 250))
-  strokeWeight(random(0.1, 10))
+  strokeWeight(random(0.1, 6))
 
   const level = amp.getLevel();
 
@@ -113,7 +124,6 @@ function mouseClicked() {
     audio.play()
     loop() // makes it stop instead of canceling
   }
-  
 }
 
 

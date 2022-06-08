@@ -27,7 +27,7 @@ function setup() {
   colorPicker.position(20, 420);
   noStroke();
 
-  //color
+  //Set colormode to HSL
   colorMode(HSL, 1);
 }
 
