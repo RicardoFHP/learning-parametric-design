@@ -2,16 +2,16 @@
 // Tutorial used: https://www.youtube.com/watch?v=uk96O7N1Yo0
 // Tutorial used : https://modest-mayer-1e081f.netlify.app/de/bonus/sound/
 // inspo https://www.youtube.com/watch?v=6i5hho2aD-E
-
+// inspo https://youtu.be/BQSoNYb69TE?t=12
 
 
 // TODO
-// INput Radio Buttons
+// INput Radio Buttons for chaning emotion
 // Buttons for diffrent Sound
 //Array for Ghost effect
 //Pitch, Bass, mids, lows define How soundwave looks.
 
-// Emotion changes appearance (color and may form)
+// Emotion changes appearance (color and may form) using Sound instead of Voice for easier recognition
 // Css Visual UI
 
 
@@ -30,13 +30,14 @@ let sliderB; // Variable for Slider
 let radio; //radio button 
 
 
-const points = []; // empty Array (for Array ghost effect)
-const numLoops = 20;
-const minOpacity = 200;
+var points = []; // empty Array (for Array ghost effect)
+const minOpacity = 200; //transparency to use for points
 
 // load soundfile
 function preload() {
-  audio = loadSound('jarvis_start.mp3')
+  song1 = loadSound('concussive.mp3');
+  song2 = loadSound('ethernal.mp3');
+  song3 = loadSound('kinetic.mp3');
 }
 
 function setup() {
@@ -50,7 +51,7 @@ function setup() {
       // audio activation...
 
       amp = new p5.Amplitude();
-      amp.setInput(audio);
+      amp.setInput(song1);
 
 
 //##################################
@@ -70,17 +71,29 @@ function setup() {
       sliderB.size(100);
       //creates radio button for diffrent sound Input
       radio = createRadio();
-      radio.option('1', 'Sound1');
-      radio.option('2', 'Sound2');
-      radio.option('3', 'Sound3');
+      radio.option('red', '1');
+      radio.option('purple', '2');
+      radio.option('cyan', '3');
       radio.style('width', '300px');
-      radio.selected('1');
+      radio.selected('purple', '2');
 
-      let val = radio.value();
-      if (val) {
-        audio = loadSound('jarvis_start.mp3')
-        text('item cost is $' + val, width / 2, height / 2);
-      }
+      //load selected sound with radio button
+     // let val = radio.value();
+     // if (val) {
+     //   song1 = playSound('concussive.mp3')
+      //}
+    //  function radiobuttonchoice() {
+   //   if radio.option('1') {
+   //     playSound('concussive.mp3')
+   //   }
+  //  }
+
+     // function radiobuttonchoice() {
+   //    if radio.option('1') {
+    //      // .isPlaying() returns a boolean
+    //      amp.setInput(song1);
+   //   }
+    //  }
 
 //##################################    
 
@@ -88,8 +101,20 @@ function setup() {
 
 
 
-
 function draw() {
+
+  
+
+    // Radio Button Input change
+    // Get the value of the radio-button
+    var radioValue = radio.value();
+     
+    // set/change the sound to value of Button
+    //amp.setInput(song1);
+    //song1 = loadSound('ethernal.mp3');
+
+
+
   //background rgb color 30 = dark gray 0=black, 255=white red=0,green=0,blue=0
   background(20,20,30);
   stroke(230 + 20 * noise(counter, 1));
@@ -121,7 +146,7 @@ function draw() {
 
   // adding glow shadow
   drawingContext.shadowBlur = 30;
-  drawingContext.shadowColor = color(clr); //color(random(0,80), 10, random(200,255));
+  drawingContext.shadowColor = color(radioValue); //was clr for colorpicker //color(random(0,80), 10, random(200,255));
 
 
 
@@ -141,15 +166,56 @@ function draw() {
   //##################################
   //draw outer circle right
 
+
+  //stroke(255,255,255,30)
   beginShape()
+  
+  var newpoints = []; //empty Array for newpoints
+
   for (var i = 0; i/*index variable*/ < 180/*halber Kreis*/; i++) {
     var index = floor(map([i], 0, 180, 0, wave.length - 1))
 
     var r = map(wave[index], -1, 1, 180, 350)
     var x = r * sin(i) 
     var y = r * cos(i)
-    point(x, y) //point or vertex to change apperence, creates half circle
-    //rotate(rotationLeft);
+    
+    newpoints.push([x, y]) //point or vertex to change appearence
+
+  }
+  points.push(newpoints); //
+  points = points.slice(-8); //slice/delete all but the last (X) arrays
+
+  for (let p = 0; p < points.length; p += 1)/*inner array*/ 
+  {
+    for (let pp = 0; pp < points[p].length; pp += 3) {
+      point(points[p][pp][0], points[p][pp][1])
+    }
+
+  } //go through big array 
+ 
+
+
+  
+
+
+  endShape()
+
+
+  strokeWeight(1 + (sliderDotSize.value() / 8))
+
+ //set rotation speed
+  //rotationRight += (0.002 * sin);
+  //rotate(rotationRight);
+
+  beginShape()
+  for (var i = 0; i/*index variable*/ < 180/*halber Kreis*/; i++) {
+    var index = floor(map(i, 0, 180, 0, wave.length - 1))
+
+    var r = map(wave[index], -1, 1, 150, 250)
+    var x = r * sin(i) //-sin mirrors half circle Waveform
+    var y = r * cos(i)
+    vertex(x, y) //point or vertex to change apperence
+
 
   }
   endShape()
@@ -250,16 +316,14 @@ function draw() {
 //##################################
 //function to start and pause song if song is playing it should either start or pause
 function mouseClickedOnCanvas() {
-  if (audio.isPlaying()) {
-    audio.pause()
+  if (song1.isPlaying()) {
+    song1.pause()
     noLoop() // makes it stop instead of canceling
   } else {
-    audio.play()
+    song1.play()
     loop() // makes it stop instead of canceling
   }
 }
-
-
 
 
 
