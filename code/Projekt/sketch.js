@@ -3,16 +3,19 @@
 // Tutorial used : https://modest-mayer-1e081f.netlify.app/de/bonus/sound/
 // inspo https://www.youtube.com/watch?v=6i5hho2aD-E
 // inspo https://youtu.be/BQSoNYb69TE?t=12
+// Sounds used: https://www.101soundboards.com/boards/28217-dj-sona-league-of-legends
 
 
 // TODO
-// INput Radio Buttons for chaning emotion
-// Buttons for diffrent Sound
-//Array for Ghost effect
+// Change Effect when using radio button
 //Pitch, Bass, mids, lows define How soundwave looks.
-
+// make soundwave smoother less far movement
+//PLAY / Pause buttons
+//and volume slider
+// play random sound 
 // Emotion changes appearance (color and may form) using Sound instead of Voice for easier recognition
 // Css Visual UI
+
 
 
 
@@ -24,26 +27,61 @@ let easing = 0.05;
 //let amp; //Variable for Amplitud: Loudness and Soundlevel
 let colorPicker;
 let sliderDotSize; //erstellt Variable Slider
-let sliderB; // Variable for Slider 
+let sliderAudio; // Variable for Slider 
 //var rotationLeft = 0; // rotattion for inner circle left
 //var rotationRight = 0; // rotattion for inner
-let radio; //radio button 
 
 
 var points = []; // empty Array (for Array ghost effect)
 const minOpacity = 200; //transparency to use for points
 
+let state = 1;
+let radio;
+//##################################
+// Function for Switch Sound when pressing Button to sound array 0,1 or 2
+//##################################
+function myInputEvent() {
+  sound1.pause();
+  sound2.pause();
+  sound3.pause();
+  state = radio.value();
+  console.log(state);
+  if (state === '1') {
+  changemusic1.play();
+  amp.setInput(sound1);
+  sound1.play();
+} else if (state === '2') {
+  changemusic1.play();
+  amp.setInput(sound2);
+  sound2.play();
+} else if (state === '3') {
+  changemusic2.play();
+  amp.setInput(sound3);
+  sound3.play();
+} 
+}
+
+
+
+
+
+
 // load soundfile
 function preload() {
-  song1 = loadSound('concussive.mp3');
-  song2 = loadSound('ethernal.mp3');
-  song3 = loadSound('kinetic.mp3');
+  sound1 = loadSound('concussive.mp3');
+  sound2 = loadSound('ethernal.mp3');
+  sound3 = loadSound('kinetic.mp3');
+  changemusic1 = loadSound('changemusic1.mp3');
+  changemusic2 = loadSound('changemusic2.mp3');
+
+  /* sound = [sound1, sound2, sound3]; // Sound array */
+
 }
 
 function setup() {
   // create canvas to draw in. Size is the height and width of the Browserwindow
   var canvas = createCanvas(windowWidth, windowHeight);
-  canvas.mouseClicked(mouseClickedOnCanvas); // fix for only play/pause when clicking on Canvas, linking to function
+  /* canvas.mouseClicked(mouseClickedOnCanvas);  */// fix for only play/pause when clicking on Canvas, linking to function
   angleMode(DEGREES);
 
   fft = new p5.FFT();
@@ -51,7 +89,8 @@ function setup() {
       // audio activation...
 
       amp = new p5.Amplitude();
-      amp.setInput(song1);
+      
+
 
 
 //##################################
@@ -66,54 +105,28 @@ function setup() {
       sliderDotSize.position(20, 460);
       sliderDotSize.size(100);
       //Erstellt slider B
-      sliderB = createSlider(0.01, 0.1, 0.01, 0.01);
-      sliderB.position(20, 480);
-      sliderB.size(100);
-      //creates radio button for diffrent sound Input
-      radio = createRadio();
-      radio.option('red', '1');
-      radio.option('purple', '2');
-      radio.option('cyan', '3');
-      radio.style('width', '300px');
-      radio.selected('purple', '2');
+      sliderAudio = createSlider(0, 100, 50, 0.5);
+      sliderAudio.position(20, 480);
+      sliderAudio.size(100);
 
-      //load selected sound with radio button
-     // let val = radio.value();
-     // if (val) {
-     //   song1 = playSound('concussive.mp3')
-      //}
-    //  function radiobuttonchoice() {
-   //   if radio.option('1') {
-   //     playSound('concussive.mp3')
-   //   }
-  //  }
-
-     // function radiobuttonchoice() {
-   //    if radio.option('1') {
-    //      // .isPlaying() returns a boolean
-    //      amp.setInput(song1);
-   //   }
-    //  }
-
-//##################################    
+  //##################################
+  // Create Radio Buttons
+  //##################################
+      
+        radio = createRadio();
+        radio.option(1, 'state 1');
+        radio.option(2, 'state 2');
+        radio.option(3, 'state 3');
+        radio.input(myInputEvent);
+         
+        
+  //##################################
 
 }
 
 
 
 function draw() {
-
-  
-
-    // Radio Button Input change
-    // Get the value of the radio-button
-    var radioValue = radio.value();
-     
-    // set/change the sound to value of Button
-    //amp.setInput(song1);
-    //song1 = loadSound('ethernal.mp3');
-
-
 
   //background rgb color 30 = dark gray 0=black, 255=white red=0,green=0,blue=0
   background(20,20,30);
@@ -142,11 +155,31 @@ function draw() {
 
   //##################################
 
+  
 
+
+
+  var shadowcolor=('blue'); // variable for shadow color used in strokeWeight default blue
+
+  
+  //##################################
+  //Diffrent spectrum for bass, mids and tremble
+  //##################################
+  // 
+  if (state === '1') {
+      shadowcolor=('red');
+      strokeWeight(sliderDotSize.value() * noise(0.05,0.2));
+    } else if (state === '2') {
+      shadowcolor=('purple');
+      strokeWeight(sliderDotSize.value() * 0.5);
+    } else if (state === '3') {
+      shadowcolor=('cyan');
+      strokeWeight(sliderDotSize.value() * 1);
+    }
 
   // adding glow shadow
   drawingContext.shadowBlur = 30;
-  drawingContext.shadowColor = color(radioValue); //was clr for colorpicker //color(random(0,80), 10, random(200,255));
+  drawingContext.shadowColor = color(shadowcolor); //color(random(0,80), 10, random(200,255));
 
 
 
@@ -193,17 +226,12 @@ function draw() {
 
   } //go through big array 
  
-
-
-  
-
-
   endShape()
 
 
   strokeWeight(1 + (sliderDotSize.value() / 8))
 
- //set rotation speed
+  //set rotation speed
   //rotationRight += (0.002 * sin);
   //rotate(rotationRight);
 
@@ -223,8 +251,8 @@ function draw() {
 
   //##################################
   //draw outer circle left
-  beginShape()
-  for (var i = 0; i/*index variable*/ < 180/*halber Kreis*/; i++) {
+/*   beginShape()
+  for (var i = 0; i < 180; i++) {
     var index = floor(map(i, 0, 180, 0, wave.length - 2))
 
     var r = map(wave[index], -1, 1, 180, 350)
@@ -233,8 +261,38 @@ function draw() {
     point(x, y) //point or vertex to change appearence
 
   }
-  endShape()
+  endShape() */
 
+  beginShape()
+  
+  var newpoints = []; //empty Array for newpoints
+  const minOpacity = 200;
+
+  for (var i = 0; i/*index variable*/ < 180/*halber Kreis*/; i++) {
+    var index = floor(map([i], 0, 180, 0, wave.length - 1))
+
+    var r = map(wave[index], -1, 1, 180, 350)
+    var x = r * -sin(i) 
+    var y = r * cos(i)
+    
+    newpoints.push([x, y]) //point or vertex to change appearence
+
+  }
+  points.push(newpoints); //
+  points = points.slice(-20); //slice/delete all but the last (X) arrays
+
+  for (let p = 0; p < points.length; p += 1)
+  //stroke(10, minOpacity/newpoints * l)
+
+  /*inner array*/ 
+  {
+    for (let pp = 0; pp < points[p].length; pp += 3) {
+      point(points[p][pp][0], points[p][pp][1])
+    }
+
+  } //go through big array 
+ 
+  endShape()
 
 //##################################
   //mid Circle lieft
@@ -314,16 +372,7 @@ function draw() {
 
 
 //##################################
-//function to start and pause song if song is playing it should either start or pause
-function mouseClickedOnCanvas() {
-  if (song1.isPlaying()) {
-    song1.pause()
-    noLoop() // makes it stop instead of canceling
-  } else {
-    song1.play()
-    loop() // makes it stop instead of canceling
-  }
-}
+
 
 
 
