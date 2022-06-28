@@ -137,6 +137,20 @@ function togglePlaying() {
     sound1.pause();
     buttonPP.html('Pause');
   }
+  if (!sound2.isPlaying()) {
+    sound2.play();
+    buttonPP.html('Play');
+  } else {
+    sound2.pause();
+    buttonPP.html('Pause');
+  }
+  if (!sound3.isPlaying()) {
+    sound3.play();
+    buttonPP.html('Play');
+  } else {
+    sound3.pause();
+    buttonPP.html('Pause');
+  }
 }
 
 function draw() {
@@ -155,7 +169,7 @@ function draw() {
   //Diffrent spectrum for bass, mids and tremble
   //##################################
 
-  let spectrum = fft.analyze();
+/*   let spectrum = fft.analyze();
   let bass, lowMid, mid, highMid, treble;
 
   bass = fft.getEnergy("bass");
@@ -164,7 +178,7 @@ function draw() {
   highMid = fft.getEnergy("highMid");
   treble = fft.getEnergy("treble");
   
-  let bins=[bass,lowMid,mid,highMid,treble]
+  let bins=[bass,lowMid,mid,highMid,treble] */
 
   //##################################
 
@@ -211,7 +225,7 @@ function draw() {
   //variable for fft waveform, returns array with thousands of elements
   var wave = fft.waveform()
   
-  //set rotation speed
+  //set rotationSpeed
   //rotationLeft -= 0.002;
 
   //##################################
@@ -254,8 +268,8 @@ function draw() {
   strokeWeight(1 + (sliderDotSize.value() / 8))
 
   //set rotation speed
-  //rotationRight += (0.002 * sin);
-  //rotate(rotationRight);
+  //rotationLeft += (0.002 * sin);
+  //rotate(rotationLeft);
 
   beginShape()
   for (var i = 0; i/*index variable*/ < 180/*halber Kreis*/; i++) {
@@ -322,9 +336,8 @@ function draw() {
   strokeWeight(1 + (sliderDotSize.value() / 8))
   noFill()
 
- //set rotation speed
-  //rotationRight += (0.002 * sin);
-  //rotate(rotationRight);
+  //rotationLeft += (0.002 * sin);
+  //rotate(rotationLeft);
 
   beginShape()
   for (var i = 0; i/*index variable*/ < 180/*halber Kreis*/; i++) {
