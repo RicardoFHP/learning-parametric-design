@@ -7,14 +7,12 @@
 
 
 // TODO
-// Change Effect when using radio button
 //Pitch, Bass, mids, lows define How soundwave looks.
 // make soundwave smoother less far movement
-//PLAY / Pause buttons
-//and volume slider
 // play random sound 
-// Emotion changes appearance (color and may form) using Sound instead of Voice for easier recognition
 // Css Visual UI
+//play random sound (add random sounds)
+// clean up
 
 
 
@@ -37,6 +35,10 @@ const minOpacity = 200; //transparency to use for points
 
 let state = 1;
 let radio;
+
+var buttonPP;
+
+
 //##################################
 // Function for Switch Sound when pressing Button to sound array 0,1 or 2
 //##################################
@@ -60,9 +62,6 @@ function myInputEvent() {
   sound3.play();
 } 
 }
-
-
-
 
 
 
@@ -98,33 +97,47 @@ function setup() {
 //##################################
       // Colorpicker Sets up
       colorPicker = createColorPicker('#00fbfb');
-      colorPicker.position(width + 20, 200);
+      colorPicker.position(width + 24, 20);
       
-      // Erstellt slider für die größe der Kreise
-      sliderDotSize = createSlider(1,50,10,5); // Min, max, start, steps
-      sliderDotSize.position(20, 460);
-      sliderDotSize.size(100);
-      //Erstellt slider B
-      sliderAudio = createSlider(0, 100, 50, 0.5);
-      sliderAudio.position(20, 480);
+      radio = createRadio();
+      radio.option(1, 'Aufregend');
+      radio.option(2, 'Entspannt');
+      radio.option(3, 'Konzentriert');
+      radio.position(width + 24, 300);
+      radio.input(myInputEvent);
+
+      // creates button for play and pause
+      buttonPP = createButton('Pause');
+      buttonPP.mousePressed(togglePlaying);
+      buttonPP.position(width + 24, 460);
+
+      //creates slider for audio volume
+      sliderAudio = createSlider(0, 1, 0.5, 0.01);
+      sliderAudio.position(width + 24, 500);
       sliderAudio.size(100);
 
-  //##################################
-  // Create Radio Buttons
-  //##################################
-      
-        radio = createRadio();
-        radio.option(1, 'state 1');
-        radio.option(2, 'state 2');
-        radio.option(3, 'state 3');
-        radio.input(myInputEvent);
+
          
         
   //##################################
 
+      // creates slider für dot size
+      sliderDotSize = createSlider(1,50,10,0.5); // Min, max, start, steps
+      sliderDotSize.position(width + 24, 600);
+      sliderDotSize.size(100);
+
 }
 
-
+// Funktion for pause or play
+function togglePlaying() {
+  if (!sound1.isPlaying()) {
+    sound1.play();
+    buttonPP.html('Play');
+  } else {
+    sound1.pause();
+    buttonPP.html('Pause');
+  }
+}
 
 function draw() {
 
@@ -155,7 +168,16 @@ function draw() {
 
   //##################################
 
-  
+  //##################################
+  //Sets the Volume of sounds to the value of the slider
+  //##################################
+
+  let sliderAudioVal = sliderAudio.value();
+  sound1.setVolume(sliderAudio.value());
+  sound2.setVolume(sliderAudio.value());
+  sound3.setVolume(sliderAudio.value());
+  changemusic1.setVolume(sliderAudio.value());
+  changemusic2.setVolume(sliderAudio.value());
 
 
 
@@ -216,7 +238,7 @@ function draw() {
 
   }
   points.push(newpoints); //
-  points = points.slice(-8); //slice/delete all but the last (X) arrays
+  points = points.slice(-10); //slice/delete all but the last (X) arrays
 
   for (let p = 0; p < points.length; p += 1)/*inner array*/ 
   {
