@@ -46,20 +46,21 @@ function myInputEvent() {
   sound1.pause();
   sound2.pause();
   sound3.pause();
+  
   state = radio.value();
   console.log(state);
   if (state === '1') {
   changemusic1.play();
   amp.setInput(sound1);
-  sound1.play();
+  sound1.loop();
 } else if (state === '2') {
   changemusic1.play();
   amp.setInput(sound2);
-  sound2.play();
+  sound2.loop();
 } else if (state === '3') {
   changemusic2.play();
   amp.setInput(sound3);
-  sound3.play();
+  sound3.loop();
 } 
 }
 
@@ -73,13 +74,18 @@ function preload() {
   changemusic1 = loadSound('changemusic1.mp3');
   changemusic2 = loadSound('changemusic2.mp3');
 
+  // load svg for buttons
+  happySvg = loadImage('happy.svg');
+  superhappySvg = loadImage('superhappy.svg');
+  neutralSvg = loadImage('neutral.svg');
+
   /* sound = [sound1, sound2, sound3]; // Sound array */
 
 }
 
 function setup() {
   // create canvas to draw in. Size is the height and width of the Browserwindow
-  var canvas = createCanvas(windowWidth, windowHeight);
+  var canvas = createCanvas(windowWidth -300, windowHeight);
   /* canvas.mouseClicked(mouseClickedOnCanvas);  */// fix for only play/pause when clicking on Canvas, linking to function
   angleMode(DEGREES);
 
@@ -91,20 +97,24 @@ function setup() {
       
 
 
-
 //##################################
 // INPUTS 
 //##################################
-      // Colorpicker Sets up
-      colorPicker = createColorPicker('#00fbfb');
-      colorPicker.position(width + 24, 20);
-      
+     
+  labelRadio = createDiv();
+  labelRadio.position(30, 30);  
       radio = createRadio();
-      radio.option(1, 'Aufregend');
-      radio.option(2, 'Entspannt');
-      radio.option(3, 'Konzentriert');
+      radio.parent(labelRadio);
+      radio.addClass('rating');
+      radio.option(1, 'Concussive');
+      radio.option(2, 'Ethernal');
+      radio.option(3, 'Kinetic');
       radio.position(width + 24, 300);
       radio.input(myInputEvent);
+      radio.style('width', '76px');
+      radio.style('height', '76px');
+      image(happySvg);
+    
 
       // creates button for play and pause
       buttonPP = createButton('Pause');
@@ -112,10 +122,10 @@ function setup() {
       buttonPP.position(width + 24, 460);
 
       //creates slider for audio volume
-      sliderAudio = createSlider(0, 1, 0.5, 0.01);
+      sliderAudio = createSlider(0, 0.6, 0.3, 0.01);
       sliderAudio.position(width + 24, 500);
       sliderAudio.size(100);
-
+      sliderAudio.style('width', '254px');
 
          
         
@@ -123,34 +133,49 @@ function setup() {
 
       // creates slider für dot size
       sliderDotSize = createSlider(1,50,10,0.5); // Min, max, start, steps
-      sliderDotSize.position(width + 24, 600);
+      sliderDotSize.position(width + 24, 540);
       sliderDotSize.size(100);
+      sliderAudio.style('width', '254px');
 
 }
 
-// Funktion for pause or play
+// Function for pause or play
 function togglePlaying() {
+  
+  
+  if (
+    radio.value() == 1
+  ){
   if (!sound1.isPlaying()) {
-    sound1.play();
-    buttonPP.html('Play');
+    sound1.loop();
+    buttonPP.html('Playing');
   } else {
     sound1.pause();
-    buttonPP.html('Pause');
-  }
+    buttonPP.html('Paused');
+  }}
+
+  if (
+    radio.value() == 2
+  ){
   if (!sound2.isPlaying()) {
-    sound2.play();
-    buttonPP.html('Play');
+    sound2.loop();
+    buttonPP.html('Playing');
   } else {
     sound2.pause();
-    buttonPP.html('Pause');
-  }
+    buttonPP.html('Paused');
+  }}
+
+  if (
+    radio.value() == 3
+  ){
   if (!sound3.isPlaying()) {
-    sound3.play();
-    buttonPP.html('Play');
+    sound3.loop();
+    buttonPP.html('Playing');
   } else {
     sound3.pause();
-    buttonPP.html('Pause');
-  }
+    buttonPP.html('Paused');
+  }}
+
 }
 
 function draw() {
@@ -160,9 +185,11 @@ function draw() {
   stroke(230 + 20 * noise(counter, 1));
   strokeWeight(0.1 + sliderDotSize.value() * noise(counter));
 
+
+
+  
   counter += 0.05;
   const level = amp.getLevel();
-  const clr = colorPicker.color();//use color Value from Colorpicker  //color(hue, sat, light);
 
 
   //##################################
@@ -196,14 +223,14 @@ function draw() {
 
 
   var shadowcolor=('blue'); // variable for shadow color used in strokeWeight default blue
-
+  var ColorState1 = color(random(223,255), 0, 20);
   
   //##################################
-  //Diffrent spectrum for bass, mids and tremble
+  //Diffrent color for Soundstates
   //##################################
   // 
   if (state === '1') {
-      shadowcolor=('red');
+      shadowcolor=(ColorState1);
       strokeWeight(sliderDotSize.value() * noise(0.05,0.2));
     } else if (state === '2') {
       shadowcolor=('purple');

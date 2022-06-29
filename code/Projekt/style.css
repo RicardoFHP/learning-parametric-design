@@ -1,0 +1,121 @@
+
+body {
+    background: hsl(235, 47%, 14%);
+}
+
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: rgba(0, 0, 16, 0.8);
+  text-decoration: none;
+}
+
+a:hover,
+a:active {
+  border-bottom: 0.1em solid rgba(0, 0, 16, 0.8);
+  color: rgba(0, 0, 16, 0.8);
+  text-decoration: none;
+}
+
+span {
+  color: rgba(0, 0, 16, 0.4);
+  font-size: 70%;
+}
+
+header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: auto;
+  width: 34.6rem;
+}
+
+header h1 {
+  font-size: 2.8em;
+}
+
+.card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: auto;
+  -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 16, 0.19), 0 0.3rem 0.3rem rgba(0, 0, 16, 0.23);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 16, 0.19), 0 0.3rem 0.3rem rgba(0, 0, 16, 0.23);
+  background-color: rgb(255, 255, 255);
+  padding: 0.8rem;
+  width: 33rem;
+}
+
+.rating-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 0.4rem 0.8rem;
+  width: 100%;
+}
+
+.rating-text p {
+  color: rgba(0, 0, 16, 0.8);
+  font-size: 1.3rem;
+  padding: 0.3rem;
+}
+
+.rating {
+  background-color: rgba(0, 0, 16, 0.8);
+  padding: 0.4rem 0.4rem 0.1rem 0.4rem;
+  border-radius: 2.2rem;
+}
+
+svg {
+  fill: rgb(242, 242, 242);
+  height: 3.6rem;
+  width: 3.6rem;
+  margin: 0.2rem;
+}
+
+.rating-form-2 svg {
+  height: 3rem;
+  width: 3rem;
+  margin: 0.5rem;
+}
+
+#radios label {
+  position: relative;
+}
+
+input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+input[type="radio"] + svg {
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+input + svg {
+    cursor: pointer;
+  }
+  
+  input[value="1"]:hover + svg,
+  input[value="1"]:checked + svg,
+  input[value="1"]:focus + svg {
+    fill: rgb(196, 25, 25);
+  }
+  
+  input[class="happy"]:hover + svg,
+  input[class="happy"]:checked + svg,
+  input[class="happy"]:focus + svg {
+    fill: rgb(165, 32, 170);
+  }
+  
+  input[class="neutral"]:hover + svg,
+  input[class="neutral"]:checked + svg,
+  input[class="neutral"]:focus + svg {
+    fill: rgb(17, 141, 190);
+  }
