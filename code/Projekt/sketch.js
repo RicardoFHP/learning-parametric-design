@@ -6,13 +6,11 @@
 // Sounds used: https://www.101soundboards.com/boards/28217-dj-sona-league-of-legends
 
 
-// TODO
+// Can do
 //Pitch, Bass, mids, lows define How soundwave looks.
-// make soundwave smoother less far movement
+// make soundwave smoother, less far movement
 // play random sound 
-// Css Visual UI
 //play random sound (add random sounds)
-// clean up
 
 
 
@@ -79,14 +77,11 @@ function preload() {
   superhappySvg = loadImage('superhappy.svg');
   neutralSvg = loadImage('neutral.svg');
 
-  /* sound = [sound1, sound2, sound3]; // Sound array */
-
 }
 
 function setup() {
   // create canvas to draw in. Size is the height and width of the Browserwindow
   var canvas = createCanvas(windowWidth -300, windowHeight);
-  /* canvas.mouseClicked(mouseClickedOnCanvas);  */// fix for only play/pause when clicking on Canvas, linking to function
   angleMode(DEGREES);
 
   fft = new p5.FFT();
@@ -105,27 +100,28 @@ function setup() {
   labelRadio.position(30, 30);  
       radio = createRadio();
       radio.parent(labelRadio);
-      radio.addClass('rating');
-      radio.option(1, 'Concussive');
-      radio.option(2, 'Ethernal');
-      radio.option(3, 'Kinetic');
-      radio.position(width + 24, 300);
+      radio.addClass('rating');// adds class for Radio buttons
+      radio.option(1, 'Agressive');
+      radio.option(2, 'Chilled');
+      radio.option(3, 'Energetic');
+      radio.position(width - 8, 160);
       radio.input(myInputEvent);
-      radio.style('width', '76px');
-      radio.style('height', '76px');
-      image(happySvg);
+      radio.style('width', '60px');
+      radio.style('height', '600px');
+  
     
 
       // creates button for play and pause
       buttonPP = createButton('Pause');
+      buttonPP.addClass('playbutton');// adds class for toggle Style 
       buttonPP.mousePressed(togglePlaying);
       buttonPP.position(width + 24, 460);
 
       //creates slider for audio volume
       sliderAudio = createSlider(0, 0.6, 0.3, 0.01);
-      sliderAudio.position(width + 24, 500);
+      sliderAudio.position(width + 24, 514);
       sliderAudio.size(100);
-      sliderAudio.style('width', '254px');
+      sliderAudio.style('width', '230px');
 
          
         
@@ -133,9 +129,9 @@ function setup() {
 
       // creates slider für dot size
       sliderDotSize = createSlider(1,50,10,0.5); // Min, max, start, steps
-      sliderDotSize.position(width + 24, 540);
+      sliderDotSize.position(width + 24, 548);
       sliderDotSize.size(100);
-      sliderAudio.style('width', '254px');
+      sliderDotSize.style('width', '230px');
 
 }
 
@@ -148,10 +144,10 @@ function togglePlaying() {
   ){
   if (!sound1.isPlaying()) {
     sound1.loop();
-    buttonPP.html('Playing');
+    buttonPP.html('Pause');
   } else {
     sound1.pause();
-    buttonPP.html('Paused');
+    buttonPP.html('Play');
   }}
 
   if (
@@ -159,10 +155,10 @@ function togglePlaying() {
   ){
   if (!sound2.isPlaying()) {
     sound2.loop();
-    buttonPP.html('Playing');
+    buttonPP.html('Pause');
   } else {
     sound2.pause();
-    buttonPP.html('Paused');
+    buttonPP.html('Play');
   }}
 
   if (
@@ -170,10 +166,10 @@ function togglePlaying() {
   ){
   if (!sound3.isPlaying()) {
     sound3.loop();
-    buttonPP.html('Playing');
+    buttonPP.html('Pause');
   } else {
     sound3.pause();
-    buttonPP.html('Paused');
+    buttonPP.html('Play');
   }}
 
 }
@@ -191,23 +187,6 @@ function draw() {
   counter += 0.05;
   const level = amp.getLevel();
 
-
-  //##################################
-  //Diffrent spectrum for bass, mids and tremble
-  //##################################
-
-/*   let spectrum = fft.analyze();
-  let bass, lowMid, mid, highMid, treble;
-
-  bass = fft.getEnergy("bass");
-  lowMid = fft.getEnergy("lowMid");
-  mid = fft.getEnergy("mid");
-  highMid = fft.getEnergy("highMid");
-  treble = fft.getEnergy("treble");
-  
-  let bins=[bass,lowMid,mid,highMid,treble] */
-
-  //##################################
 
   //##################################
   //Sets the Volume of sounds to the value of the slider
@@ -254,6 +233,7 @@ function draw() {
   
   //set rotationSpeed
   //rotationLeft -= 0.002;
+
 
   //##################################
   //Circles
@@ -314,17 +294,6 @@ function draw() {
 
   //##################################
   //draw outer circle left
-/*   beginShape()
-  for (var i = 0; i < 180; i++) {
-    var index = floor(map(i, 0, 180, 0, wave.length - 2))
-
-    var r = map(wave[index], -1, 1, 180, 350)
-    var x = r * -sin(i) //-sin mirrors half circle Waveform
-    var y = r * cos(i)
-    point(x, y) //point or vertex to change appearence
-
-  }
-  endShape() */
 
   beginShape()
   
@@ -362,9 +331,6 @@ function draw() {
   stroke(random(230, 250))
   strokeWeight(1 + (sliderDotSize.value() / 8))
   noFill()
-
-  //rotationLeft += (0.002 * sin);
-  //rotate(rotationLeft);
 
   beginShape()
   for (var i = 0; i/*index variable*/ < 180/*halber Kreis*/; i++) {
@@ -429,12 +395,3 @@ function draw() {
 
 
 }
-
-//##################################
-
-
-//##################################
-
-
-
-
